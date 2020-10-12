@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+<script>
+    
+   
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * Math.floor(max));
+    }
+    function getComputerSelection() {
+        let choices=['Rock','Paper','Scissors'];
+        let randomIndex=getRandomInt(3)
+        return choices[randomIndex]
+    }
+
+
+    function playRound(playerSelection, computerSelection) {
+        let results="";
+        let score=0;
+        let tie=0;
+
+        if (((playerSelection==='Rock') && (computerSelection==='Scissors')) ||
+        ((playerSelection==='Paper') && (computerSelection==='Rock')) || 
+        ((playerSelection==='Scissors') && (computerSelection==='Paper'))) {
+            results=`You win! ${playerSelection} beats ${computerSelection}.`; 
+            score=score+1;
+        }
+        
+        else if (((playerSelection==='Paper') && (computerSelection==='Scissors')) ||
+        ((playerSelection==='Scissors') && (computerSelection==='Rock')) ||
+        ((playerSelection==='Rock') && (computerSelection==='Paper'))) {
+            results=`You lose! ${computerSelection} beats ${playerSelection}.`;
+            
+        }
+        
+        else if(playerSelection===computerSelection){
+            results=`Tied! You both chose ${playerSelection}`
+            tie=tie+1;
+        }
+        else {
+            results="Invalid input"
+        }
+
+        return {
+            results: results,
+            score: score,
+            tie: tie
+        }
+    }
+
+    function game() {
+        let i;
+        let finalResults='';
+        let finalTies='';
+
+        for (i = 0; i < 5; i++) {
+            let playerChoice=(prompt("Rock, Paper, or Scissors?")).toLowerCase();
+            let playerSelection=playerChoice.charAt(0).toUpperCase() + playerChoice.slice(1);
+            let computerSelection=getComputerSelection()
+            gameResults=playRound(playerSelection,computerSelection)
+            alert(gameResults.results)
+            finalResults= +finalResults + (+gameResults.score)
+            finalTies= +finalTies + (+gameResults.tie)
+        }
+       
+        computerScore= (5-(finalTies))-finalResults ;
+        finalResults= (finalResults > computerScore) ? "Good job! You won the game! Your score: " + `${finalResults}`+ " Computer score: " + `${computerScore}` : (finalResults=computerScore) ? "Yikes! You tied! Your score: " + `${finalResults}`+ " Computer score: " + `${computerScore}` : "Too bad. You lost the game. Your score: " + `${finalResults}`+ " Computer score: " + `${computerScore}`
+        return finalResults
+    }
+
+    
+    alert(game())
+</script>
+</body>
+</html>
