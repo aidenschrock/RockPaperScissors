@@ -1,77 +1,85 @@
 <!DOCTYPE html>
+
 <head>
 
 </head>
+
 <body>
-<script>
-    
-   
-    function getRandomInt(max) {
-        return Math.floor(Math.random() * Math.floor(max));
-    }
-    function getComputerSelection() {
-        let choices=['Rock','Paper','Scissors'];
-        let randomIndex=getRandomInt(3)
-        return choices[randomIndex]
-    }
+    <button id="btn" onclick="gameWrapper('Rock')">Rock</button>
+    <button id="btn" onclick="gameWrapper('Paper')">Paper</button>
+    <button id="btn" onclick="gameWrapper('Scissors')">Scissors</button>
+    <div id="container">
 
+    </div>
+    <script>
+        let playerScore = 0
+        let computerScore = 0
+        let tiesScore = 0
 
-    function playRound(playerSelection, computerSelection) {
-        let results="";
-        let score=0;
-        let tie=0;
-
-        if (((playerSelection==='Rock') && (computerSelection==='Scissors')) ||
-        ((playerSelection==='Paper') && (computerSelection==='Rock')) || 
-        ((playerSelection==='Scissors') && (computerSelection==='Paper'))) {
-            results=`You win! ${playerSelection} beats ${computerSelection}.`; 
-            score=score+1;
-        }
-        
-        else if (((playerSelection==='Paper') && (computerSelection==='Scissors')) ||
-        ((playerSelection==='Scissors') && (computerSelection==='Rock')) ||
-        ((playerSelection==='Rock') && (computerSelection==='Paper'))) {
-            results=`You lose! ${computerSelection} beats ${playerSelection}.`;
-            
-        }
-        
-        else if(playerSelection===computerSelection){
-            results=`Tied! You both chose ${playerSelection}`
-            tie=tie+1;
-        }
-        else {
-            results="Invalid input"
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * Math.floor(max));
         }
 
-        return {
-            results: results,
-            score: score,
-            tie: tie
+        function getComputerSelection() {
+            let choices = ['Rock', 'Paper', 'Scissors'];
+            let randomIndex = getRandomInt(3)
+            return choices[randomIndex]
         }
-    }
 
-    function game() {
-        let i;
-        let finalResults='';
-        let finalTies='';
 
-        for (i = 0; i < 5; i++) {
-            let playerChoice=(prompt("Rock, Paper, or Scissors?")).toLowerCase();
-            let playerSelection=playerChoice.charAt(0).toUpperCase() + playerChoice.slice(1);
-            let computerSelection=getComputerSelection()
-            gameResults=playRound(playerSelection,computerSelection)
-            alert(gameResults.results)
-            finalResults= +finalResults + (+gameResults.score)
-            finalTies= +finalTies + (+gameResults.tie)
+        function playRound(playerSelection) {
+            console.log(playerSelection)
+            let computerSelection = getComputerSelection();
+            if (((playerSelection === 'Rock') && (computerSelection === 'Scissors')) ||
+                ((playerSelection === 'Paper') && (computerSelection === 'Rock')) ||
+                ((playerSelection === 'Scissors') && (computerSelection === 'Paper'))) {
+                results = `You win! ${playerSelection} beats ${computerSelection}.`;
+                playerScore++
+            } else if (((playerSelection === 'Paper') && (computerSelection === 'Scissors')) ||
+                ((playerSelection === 'Scissors') && (computerSelection === 'Rock')) ||
+                ((playerSelection === 'Rock') && (computerSelection === 'Paper'))) {
+                results = `You lose! ${computerSelection} beats ${playerSelection}.`;
+                computerScore++
+
+            } else if (playerSelection === computerSelection) {
+                results = `Tied! You both chose ${playerSelection}`
+            } else {
+                results = "Invalid input"
+            }
+
+            return results
+            console.log(results)
+
         }
-       
-        computerScore= (5-(finalTies))-finalResults ;
-        finalResults= (finalResults > computerScore) ? "Good job! You won the game! Your score: " + `${finalResults}`+ " Computer score: " + `${computerScore}` : (finalResults=computerScore) ? "Yikes! You tied! Your score: " + `${finalResults}`+ " Computer score: " + `${computerScore}` : "Too bad. You lost the game. Your score: " + `${finalResults}`+ " Computer score: " + `${computerScore}`
-        return finalResults
-    }
+        const container = document.querySelector('#container');
+        const content = document.createElement('p');
+        content.classList.add('content')
+        const scores = document.createElement('p');
+        content.classList.add('scores')
 
-    
-    alert(game())
-</script>
+        function gameWrapper(playerSelction) {
+            let roundResults = playRound(playerSelction);
+            scores.textContent = "Your Score: " + `${playerScore}` + " VS Computer Score: " + `${computerScore}`;
+
+
+            if (playerScore == 5) {
+                let finalResults = "Good job! You won the game!"
+                const header = document.createElement('h2');
+                header.textContent = finalResults;
+                container.appendChild(header);
+            } else if (computerScore == 5) {
+                let finalResults = "Too bad. You lost the game."
+                const header = document.createElement('h2');
+                header.textContent = finalResults;
+                container.appendChild(header);
+            }
+
+            content.textContent = roundResults;
+            container.appendChild(content);
+            container.appendChild(scores)
+
+        }
+    </script>
 </body>
+
 </html>
